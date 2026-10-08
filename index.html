@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MiniTienda Web: catálogo de productos, carrito de compras y checkout simulado.">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>MiniTienda Web</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛍️%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="visually-hidden-focusable skip-link" href="#catalogo">Saltar al catálogo</a>
+
+  <!-- ============ Barra de navegación ============ -->
+  <header>
+    <nav class="navbar sticky-top apple-nav" aria-label="Principal">
+      <div class="container">
+        <a class="navbar-brand" href="./">MiniTienda</a>
+        <button type="button" class="btn btn-soft btn-sm d-inline-flex align-items-center gap-2"
+                id="cartButton" data-bs-toggle="offcanvas" data-bs-target="#cartPanel" aria-controls="cartPanel">
+          <span aria-hidden="true">🛒</span>
+          <span>Carrito</span>
+          <span class="badge rounded-pill text-bg-primary" id="cartCount" hidden>0</span>
+          <span class="visually-hidden">artículos en el carrito</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ Hero ============ -->
+    <section class="hero">
+      <div class="container">
+        <h1>Tecnología simple.<br>Compras sin complicaciones.</h1>
+        <p>Explora el catálogo, agrega lo que te gusta y finaliza tu compra en segundos.</p>
+      </div>
+    </section>
+
+    <!-- ============ Búsqueda y filtros ============ -->
+    <section class="container toolbar" id="catalogo" aria-label="Búsqueda y filtros">
+      <div class="search-wrap" role="search">
+        <label class="visually-hidden" for="searchInput">Buscar productos</label>
+        <input type="search" id="searchInput" class="form-control search-input"
+               placeholder="Buscar productos" autocomplete="off" maxlength="60">
+      </div>
+      <div class="filters" id="categoryFilters" role="group" aria-label="Filtrar por categoría"></div>
+    </section>
+
+    <!-- ============ Catálogo ============ -->
+    <section class="container catalog" aria-label="Catálogo de productos">
+      <p class="mt-muted small mb-3" id="resultsInfo" aria-live="polite"></p>
+
+      <div id="loadingState" class="state-box" role="status">
+        <div class="spinner-border text-secondary" aria-hidden="true"></div>
+        <p class="mt-muted mt-3 mb-0">Cargando catálogo…</p>
+      </div>
+
+      <div id="errorState" class="state-box" role="alert" hidden>
+        <div class="state-icon" aria-hidden="true">⚠️</div>
+        <h2 class="h5 fw-semibold">No se pudo cargar el catálogo</h2>
+        <p class="mt-muted" id="errorMessage"></p>
+        <button type="button" class="btn btn-primary" data-action="retry">Reintentar</button>
+      </div>
+
+      <div id="emptyState" class="state-box" hidden>
+        <div class="state-icon" aria-hidden="true">🔍</div>
+        <h2 class="h5 fw-semibold">Sin resultados</h2>
+        <p class="mt-muted">No encontramos productos con esa búsqueda o categoría.</p>
+        <button type="button" class="btn btn-soft" data-action="reset-filters">Ver todo el catálogo</button>
+      </div>
+
+      <div id="productGrid" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4" hidden></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container text-center">
+      <p class="mb-1">MiniTienda Web · Proyecto académico</p>
+      <p class="mb-0">El checkout es una simulación: no ingreses datos reales de tarjetas ni información financiera.</p>
+    </div>
+  </footer>
+
+  <!-- ============ Carrito (panel lateral) ============ -->
+  <aside class="offcanvas offcanvas-end" tabindex="-1" id="cartPanel" aria-labelledby="cartTitle">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title h4 fw-semibold" id="cartTitle">Tu carrito</h2>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar carrito"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="list-unstyled m-0" id="cartItems"></ul>
+    </div>
+    <div class="cart-footer">
+      <dl class="totals">
+        <div><dt>Subtotal</dt><dd id="subtotalValue">$ 0</dd></div>
+        <div><dt>IVA (19 %)</dt><dd id="taxValue">$ 0</dd></div>
+        <div class="row-total"><dt>Total</dt><dd id="totalValue">$ 0</dd></div>
+      </dl>
+      <div class="d-grid gap-2">
+        <button type="button" class="btn btn-primary btn-lg" id="checkoutBtn" data-action="checkout" disabled>Finalizar compra</button>
+        <button type="button" class="btn btn-soft" id="clearBtn" data-action="clear" disabled>Vaciar carrito</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ Modal: detalle del producto ============ -->
+  <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="detailName" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar detalle"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <div class="row g-4 align-items-center">
+            <div class="col-md-5">
+              <div class="detail-media"><span id="detailIcon" aria-hidden="true"></span></div>
+            </div>
+            <div class="col-md-7">
+              <p class="product-category" id="detailCategory"></p>
+              <h2 class="h2 fw-bold mb-2" id="detailName"></h2>
+              <p class="mt-muted" id="detailDescription"></p>
+              <ul class="detail-features" id="detailFeatures"></ul>
+              <div class="d-flex align-items-center justify-content-between gap-3 mt-4">
+                <span class="fs-4 fw-semibold" id="detailPrice"></span>
+                <button type="button" class="btn btn-primary btn-lg" id="detailAddBtn" data-action="add">Agregar al carrito</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Modal: checkout simulado ============ -->
+  <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h4 fw-semibold" id="checkoutTitle">Finalizar compra</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <!-- Paso 1: formulario -->
+        <div id="checkoutPane">
+          <form id="checkoutForm" novalidate>
+            <div class="modal-body">
+              <div class="alert alert-light border-0 small" role="note">
+                Esto es una <strong>simulación</strong>. No solicitamos números de tarjeta ni datos bancarios.
+              </div>
+              <div class="alert alert-danger small" id="formAlert" role="alert" hidden></div>
+
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label" for="coName">Nombre completo</label>
+                  <input type="text" class="form-control" id="coName" name="name" required minlength="3" maxlength="60" autocomplete="name">
+                  <div class="invalid-feedback">Ingresa tu nombre (mínimo 3 caracteres).</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="coEmail">Correo electrónico</label>
+                  <input type="email" class="form-control" id="coEmail" name="email" required maxlength="80"
+                         pattern="[^@\s]+@[^@\s]+\.[^@\s]+" autocomplete="email">
+                  <div class="invalid-feedback">Ingresa un correo válido, por ejemplo nombre@correo.com.</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="coPhone">Teléfono</label>
+                  <input type="tel" class="form-control" id="coPhone" name="phone" required inputmode="numeric"
+                         pattern="[0-9]{7,10}" maxlength="10" autocomplete="tel">
+                  <div class="invalid-feedback">Ingresa de 7 a 10 dígitos, solo números.</div>
+                </div>
+                <div class="col-md-8">
+                  <label class="form-label" for="coAddress">Dirección</label>
+                  <input type="text" class="form-control" id="coAddress" name="address" required minlength="5" maxlength="100" autocomplete="street-address">
+                  <div class="invalid-feedback">Ingresa una dirección (mínimo 5 caracteres).</div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="coCity">Ciudad</label>
+                  <input type="text" class="form-control" id="coCity" name="city" required minlength="2" maxlength="40" autocomplete="address-level2">
+                  <div class="invalid-feedback">Ingresa tu ciudad.</div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="coPayment">Método de pago (simulado)</label>
+                  <select class="form-select" id="coPayment" name="payment" required>
+                    <option value="" selected disabled>Selecciona una opción</option>
+                    <option value="contra-entrega">Contra entrega</option>
+                    <option value="transferencia">Transferencia bancaria</option>
+                    <option value="billetera">Billetera digital</option>
+                  </select>
+                  <div class="invalid-feedback">Selecciona un método de pago.</div>
+                </div>
+                <div class="col-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="coAccept" required>
+                    <label class="form-check-label" for="coAccept">
+                      Entiendo que esta compra es una simulación y no ingresé datos reales.
+                    </label>
+                    <div class="invalid-feedback">Debes aceptar para continuar.</div>
+                  </div>
+                </div>
+              </div>
+
+              <dl class="totals mt-4 mb-0">
+                <div><dt id="coItems">0 artículos</dt><dd></dd></div>
+                <div><dt>Subtotal</dt><dd id="coSubtotal">$ 0</dd></div>
+                <div><dt>IVA (19 %)</dt><dd id="coTax">$ 0</dd></div>
+                <div class="row-total"><dt>Total</dt><dd id="coTotal">$ 0</dd></div>
+              </dl>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-soft" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Confirmar compra</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Paso 2: confirmación -->
+        <div id="successPane" hidden>
+          <div class="modal-body text-center py-5">
+            <div class="state-icon" aria-hidden="true">✅</div>
+            <h3 class="h3 fw-bold">¡Gracias por tu compra, <span id="orderName"></span>!</h3>
+            <p class="mt-muted mb-1">Pedido simulado <strong id="orderNumber"></strong></p>
+            <p class="mt-muted mb-0"><span id="orderItems"></span> · Total pagado <strong id="orderTotal"></strong></p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Seguir comprando</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Notificaciones ============ -->
+  <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" id="toastContainer"></div>
+
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

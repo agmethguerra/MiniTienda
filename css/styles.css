@@ -1,0 +1,434 @@
+/* ==========================================================================
+   MiniTienda Web — estilos (diseño inspirado en Apple, sobre Bootstrap 5)
+   Orden: 1. Tokens  2. Base  3. Componentes Bootstrap  4. Layout  5. Producto
+          6. Carrito  7. Modales  8. Estados  9. Accesibilidad
+   ========================================================================== */
+
+/* 1. Tokens ---------------------------------------------------------------- */
+:root {
+  --mt-bg: #f5f5f7;
+  --mt-surface: #ffffff;
+  --mt-text: #1d1d1f;
+  --mt-muted: #6e6e73;
+  --mt-accent: #0071e3;
+  --mt-accent-hover: #0077ed;
+  --mt-fill: #e8e8ed;
+  --mt-fill-hover: #dcdce1;
+  --mt-line: rgba(0, 0, 0, 0.08);
+  --mt-radius: 20px;
+  --mt-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --mt-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Variables de Bootstrap que sobrescribimos */
+  --bs-body-font-family: var(--mt-font);
+  --bs-body-bg: var(--mt-bg);
+  --bs-body-color: var(--mt-text);
+  --bs-primary: #0071e3;
+  --bs-primary-rgb: 0, 113, 227;
+  --bs-link-color: var(--mt-accent);
+  --bs-link-hover-color: var(--mt-accent-hover);
+}
+
+/* 2. Base ------------------------------------------------------------------ */
+body {
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+
+.mt-muted {
+  color: var(--mt-muted);
+}
+
+/* 3. Componentes Bootstrap personalizados ---------------------------------- */
+.btn {
+  --bs-btn-font-weight: 500;
+  --bs-btn-border-radius: 980px;
+  --bs-btn-padding-x: 1.1rem;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--mt-accent);
+  --bs-btn-border-color: var(--mt-accent);
+  --bs-btn-hover-bg: var(--mt-accent-hover);
+  --bs-btn-hover-border-color: var(--mt-accent-hover);
+  --bs-btn-active-bg: #006edb;
+  --bs-btn-active-border-color: #006edb;
+  --bs-btn-disabled-bg: var(--mt-accent);
+  --bs-btn-disabled-border-color: var(--mt-accent);
+}
+
+.btn-soft {
+  --bs-btn-color: var(--mt-text);
+  --bs-btn-bg: var(--mt-fill);
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-color: var(--mt-text);
+  --bs-btn-hover-bg: var(--mt-fill-hover);
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-color: var(--mt-text);
+  --bs-btn-active-bg: #d2d2d7;
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-disabled-color: var(--mt-muted);
+  --bs-btn-disabled-bg: var(--mt-fill);
+  --bs-btn-disabled-border-color: transparent;
+}
+
+.form-control,
+.form-select {
+  border-radius: 12px;
+  padding: 0.65rem 0.9rem;
+}
+
+/* 4. Layout: navegación, hero, búsqueda ----------------------------------- */
+.apple-nav {
+  background: rgba(245, 245, 247, 0.8);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--mt-line);
+}
+
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.hero {
+  padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(1.5rem, 4vw, 2.5rem);
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2.25rem, 6.5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.07;
+  margin: 0 0 0.75rem;
+}
+
+.hero p {
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  color: var(--mt-muted);
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-wrap {
+  width: 100%;
+  max-width: 520px;
+}
+
+.search-input {
+  border: 1px solid transparent;
+  border-radius: 980px;
+  padding: 0.75rem 1.4rem;
+  background: var(--mt-surface);
+  box-shadow: inset 0 0 0 1px var(--mt-line);
+}
+
+.search-input:focus {
+  border-color: var(--mt-accent);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 100%;
+  padding: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filters::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  border: 0;
+  border-radius: 980px;
+  padding: 0.45rem 1.05rem;
+  background: var(--mt-fill);
+  color: var(--mt-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.chip:hover {
+  background: var(--mt-fill-hover);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--mt-text);
+  color: #fff;
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--mt-line);
+  color: var(--mt-muted);
+  font-size: 0.85rem;
+}
+
+/* 5. Tarjeta de producto --------------------------------------------------- */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--mt-surface);
+  border-radius: var(--mt-radius);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  box-shadow: var(--mt-shadow);
+}
+
+.product-media {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 0;
+  background: linear-gradient(180deg, #fbfbfd 0%, #ececf0 100%);
+  cursor: pointer;
+}
+
+.product-icon {
+  font-size: 4.25rem;
+  line-height: 1;
+}
+
+.product-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.25rem;
+}
+
+.product-category {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mt-muted);
+}
+
+.product-name {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.product-desc {
+  flex: 1;
+  margin: 0 0 1rem;
+  font-size: 0.92rem;
+  color: var(--mt-muted);
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.product-price {
+  font-weight: 600;
+}
+
+/* 6. Carrito --------------------------------------------------------------- */
+.offcanvas {
+  --bs-offcanvas-bg: var(--mt-surface);
+  --bs-offcanvas-width: 420px;
+  --bs-offcanvas-border-width: 0;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 0.9rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--mt-line);
+}
+
+.cart-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--mt-bg);
+  font-size: 1.9rem;
+}
+
+.cart-name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.cart-unit {
+  margin: 0 0 0.4rem;
+  font-size: 0.85rem;
+  color: var(--mt-muted);
+}
+
+.cart-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.cart-line {
+  font-weight: 600;
+}
+
+.cart-empty {
+  padding: 3rem 0;
+  text-align: center;
+  color: var(--mt-muted);
+}
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 980px;
+  background: var(--mt-bg);
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--mt-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.qty-btn:hover {
+  background: var(--mt-fill);
+}
+
+.qty-value {
+  min-width: 1.75rem;
+  text-align: center;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart-footer {
+  padding: 1.25rem 1rem;
+  border-top: 1px solid var(--mt-line);
+}
+
+.totals {
+  margin: 0 0 1rem;
+}
+
+.totals > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.25rem 0;
+  color: var(--mt-muted);
+}
+
+.totals dt,
+.totals dd {
+  margin: 0;
+  font-weight: 400;
+}
+
+.totals .row-total {
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--mt-line);
+  color: var(--mt-text);
+  font-size: 1.15rem;
+}
+
+.totals .row-total dt,
+.totals .row-total dd {
+  font-weight: 700;
+}
+
+/* 7. Modales --------------------------------------------------------------- */
+.modal {
+  --bs-modal-bg: var(--mt-surface);
+  --bs-modal-border-width: 0;
+  --bs-modal-border-radius: 24px;
+  --bs-modal-header-border-width: 0;
+  --bs-modal-footer-border-width: 0;
+}
+
+.detail-media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: var(--mt-radius);
+  background: linear-gradient(180deg, #fbfbfd 0%, #ececf0 100%);
+  font-size: 6rem;
+}
+
+.detail-features {
+  padding-left: 1.1rem;
+  margin: 0;
+  color: var(--mt-text);
+}
+
+.detail-features li {
+  margin-bottom: 0.25rem;
+}
+
+/* 8. Estados (cargando / error / vacío) ------------------------------------ */
+.state-box {
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.state-icon {
+  margin-bottom: 0.75rem;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+/* 9. Accesibilidad --------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid rgba(0, 113, 227, 0.6);
+  outline-offset: 2px;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2000;
+  padding: 0.5rem 1rem;
+  border-radius: 980px;
+  background: var(--mt-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

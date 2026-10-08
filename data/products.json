@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "name": "Audífonos Studio",
+    "category": "Audio",
+    "price": 389000,
+    "icon": "🎧",
+    "description": "Sonido envolvente con cancelación de ruido y hasta 30 horas de batería.",
+    "features": ["Cancelación activa de ruido", "Bluetooth 5.3", "30 h de batería"]
+  },
+  {
+    "id": 2,
+    "name": "Parlante Portátil Mini",
+    "category": "Audio",
+    "price": 159000,
+    "icon": "🔊",
+    "description": "Compacto, resistente al agua y con graves sorprendentes.",
+    "features": ["Resistente al agua IP67", "12 h de reproducción", "Emparejamiento estéreo"]
+  },
+  {
+    "id": 3,
+    "name": "Micrófono USB Podcast",
+    "category": "Audio",
+    "price": 229000,
+    "icon": "🎙️",
+    "description": "Captura voz nítida para podcasts, clases y reuniones.",
+    "features": ["Patrón cardioide", "Conexión USB plug and play", "Salida para audífonos"]
+  },
+  {
+    "id": 4,
+    "name": "Portátil Air 14\"",
+    "category": "Computación",
+    "price": 3299000,
+    "icon": "💻",
+    "description": "Ligero, rápido y con una pantalla brillante para trabajar donde sea.",
+    "features": ["Pantalla de 14 pulgadas", "16 GB de RAM", "SSD de 512 GB"]
+  },
+  {
+    "id": 5,
+    "name": "Monitor 27\" 4K",
+    "category": "Computación",
+    "price": 1899000,
+    "icon": "🖥️",
+    "description": "Colores precisos y mucho espacio para tus ideas.",
+    "features": ["Resolución 4K UHD", "Panel IPS", "Conexión USB-C"]
+  },
+  {
+    "id": 6,
+    "name": "Teclado Mecánico Compacto",
+    "category": "Computación",
+    "price": 329000,
+    "icon": "⌨️",
+    "description": "Escritura precisa y silenciosa en un formato reducido.",
+    "features": ["Switches silenciosos", "Bluetooth y USB", "Retroiluminación suave"]
+  },
+  {
+    "id": 7,
+    "name": "Mouse Inalámbrico Ergo",
+    "category": "Computación",
+    "price": 119000,
+    "icon": "🖱️",
+    "description": "Diseño ergonómico para largas jornadas sin fatiga.",
+    "features": ["Sensor de alta precisión", "Batería recargable", "Silencioso"]
+  },
+  {
+    "id": 8,
+    "name": "Smartphone Lite 128 GB",
+    "category": "Móviles",
+    "price": 1299000,
+    "icon": "📱",
+    "description": "Pantalla fluida, cámara versátil y batería para todo el día.",
+    "features": ["Pantalla OLED 6,1\"", "Cámara dual de 48 MP", "128 GB de almacenamiento"]
+  },
+  {
+    "id": 9,
+    "name": "Reloj Inteligente Fit",
+    "category": "Móviles",
+    "price": 459000,
+    "icon": "⌚",
+    "description": "Registra tu actividad, tu sueño y tus notificaciones.",
+    "features": ["Monitor de ritmo cardíaco", "GPS integrado", "Hasta 7 días de batería"]
+  },
+  {
+    "id": 10,
+    "name": "Cargador Rápido 65 W",
+    "category": "Accesorios",
+    "price": 99000,
+    "icon": "🔌",
+    "description": "Carga tu portátil, tableta y teléfono con un solo adaptador.",
+    "features": ["Tecnología GaN", "2 puertos USB-C", "Protección contra sobrecalentamiento"]
+  },
+  {
+    "id": 11,
+    "name": "Power Bank 20.000 mAh",
+    "category": "Accesorios",
+    "price": 149000,
+    "icon": "🔋",
+    "description": "Energía extra para tus viajes y jornadas largas.",
+    "features": ["Carga rápida 22,5 W", "Pantalla de nivel", "2 salidas USB"]
+  },
+  {
+    "id": 12,
+    "name": "Cámara Web Full HD",
+    "category": "Accesorios",
+    "price": 189000,
+    "icon": "📷",
+    "description": "Videollamadas claras con enfoque automático y micrófono doble.",
+    "features": ["1080p a 30 fps", "Enfoque automático", "Tapa de privacidad"]
+  },
+  {
+    "id": 13,
+    "name": "Mando Inalámbrico",
+    "category": "Accesorios",
+    "price": 209000,
+    "icon": "🎮",
+    "description": "Control cómodo y preciso para PC y consolas compatibles.",
+    "features": ["Vibración háptica", "Hasta 40 h de batería", "Compatible con PC y móvil"]
+  },
+  {
+    "id": 14,
+    "name": "Lámpara Inteligente LED",
+    "category": "Hogar",
+    "price": 79000,
+    "icon": "💡",
+    "description": "Ajusta color e intensidad desde tu teléfono o con tu voz.",
+    "features": ["16 millones de colores", "Control por app", "Bajo consumo"]
+  },
+  {
+    "id": 15,
+    "name": "Cafetera Espresso",
+    "category": "Hogar",
+    "price": 849000,
+    "icon": "☕",
+    "description": "Prepara un espresso de barista en tu cocina.",
+    "features": ["Presión de 15 bares", "Vaporizador de leche", "Depósito de 1,2 L"]
+  },
+  {
+    "id": 16,
+    "name": "Silla Ergonómica",
+    "category": "Hogar",
+    "price": 899000,
+    "icon": "🪑",
+    "description": "Soporte lumbar ajustable para trabajar con comodidad.",
+    "features": ["Respaldo de malla", "Altura y brazos regulables", "Soporte lumbar"]
+  }
+]
